@@ -1,0 +1,125 @@
+CREATE DATABASE academy_db;
+
+USE academy_db;
+
+CREATE TABLE students (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+age INT NOT NULL,
+id_group INT NOT NULL
+);
+
+CREATE TABLE group_academy (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(20) NOT NULL,
+id_lesson INT NULL
+);
+
+CREATE TABLE teachers(
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+age INT NULL
+);
+
+CREATE TABLE lessons(
+id INT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(50) NOT NULL,
+id_teacher INT NOT NULL
+);
+
+CREATE TABLE register(
+id INT AUTO_INCREMENT PRIMARY KEY,
+id_student INT NULL,
+id_lesson INT NULL,
+mark INT NULL
+);
+
+
+ALTER TABLE students ADD FOREIGN KEY (id_group) REFERENCES group_academy(id);
+
+ALTER TABLE register ADD FOREIGN KEY (id_student) REFERENCES students (id);
+
+ALTER TABLE register ADD FOREIGN KEY (id_lesson) REFERENCES lessons (id);
+
+ALTER TABLE group_academy ADD FOREIGN KEY (id_lesson) REFERENCES lessons (id);
+
+ALTER TABLE lessons ADD FOREIGN KEY (id_teacher) REFERENCES teachers (id);
+
+INSERT INTO teachers VALUES(1, 'Aleksandr Vladimirovich', 30);
+INSERT INTO teachers VALUES(2, 'Vladimir Petrovich', 32);
+INSERT INTO teachers VALUES(3, 'Svetlana Petrovna', 27);
+INSERT INTO teachers VALUES(4, 'Natalia S.', 26);
+INSERT INTO teachers VALUES(5, 'Anton Pavlovich', 33);
+
+INSERT INTO lessons VALUES(NULL, 'PHP', 1);
+INSERT INTO lessons VALUES(NULL, 'Java', 2);
+INSERT INTO lessons VALUES(NULL, 'JS', 3);
+INSERT INTO lessons VALUES(NULL, 'HTML/CSS', 4);
+INSERT INTO lessons VALUES(NULL, 'Ruby', 5);
+
+
+INSERT INTO group_academy VALUES(NULL, 'Group 1', 1);
+INSERT INTO group_academy VALUES(NULL, 'Group 2', 2);
+INSERT INTO group_academy VALUES(NULL, 'Group 3', 3);
+
+
+
+INSERT INTO students VALUES(NULL, 'Vasya Pupkin', 18, 1);
+INSERT INTO students VALUES(NULL, 'Anna Gorbenko', 20, 1);
+INSERT INTO students VALUES(NULL, 'Ekaterina Pushkareva', 21, 1);
+INSERT INTO students VALUES(NULL, 'Peter Pyatochkin', 19, 2);
+INSERT INTO students VALUES(NULL, 'Irina Allegrova', 17, 2);
+INSERT INTO students VALUES(NULL, 'Andrei Petrovsky', 20, 2);
+INSERT INTO students VALUES(NULL, 'Alexander Ivanenko', 22, 3);
+INSERT INTO students VALUES(NULL, 'Nicholas High', 19, 3);
+INSERT INTO students VALUES(NULL, 'Marina Ivanenko', 18, 3);
+INSERT INTO students VALUES(NULL, 'Kostya Crutch', 17, 3);
+
+
+
+INSERT INTO register VALUES(NULL, 11, 1, 5);
+INSERT INTO register VALUES(NULL, 12, 1, 4);
+INSERT INTO register VALUES(NULL, 13, 1, NULL);
+
+INSERT INTO register VALUES(NULL, 4, 2, 3);
+INSERT INTO register VALUES(NULL, 5, 2, 3);
+INSERT INTO register VALUES(NULL, 6, 2, 3);
+
+INSERT INTO register VALUES(NULL, 7, 4, 5);
+INSERT INTO register VALUES(NULL, 8, 4, 4);
+INSERT INTO register VALUES(NULL, 9, 4, NULL);
+INSERT INTO register VALUES(NULL, 10, 4, NULL);
+
+
+SELECT name FROM students;
+
+SELECT title FROM group_academy;
+
+SELECT name FROM teachers;
+
+SELECT title FROM lessons;
+
+
+
+SELECT s.name, s.age, g.title 
+FROM students s
+JOIN group_academy g ON s.id_group = g.id;
+
+
+SELECT t.name, t.age, l.title
+FROM teachers t
+JOIN lessons l ON t.id = l.id_teacher;
+
+
+SELECT g.title, count(*)  
+FROM students s
+JOIN group_academy g ON s.id_group = g.id
+WHERE id_group = 2; 
+
+
+SELECT s.name, l.title, r.mark
+FROM register r
+JOIN students s ON r.id_student = s.id
+JOIN lessons l ON r.id_lesson = l.id;
+
+
