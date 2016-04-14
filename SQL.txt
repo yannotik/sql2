@@ -123,3 +123,24 @@ JOIN students s ON r.id_student = s.id
 JOIN lessons l ON r.id_lesson = l.id;
 
 
+/*дописала*/
+ALTER TABLE lessons ADD COLUMN day VARCHAR(20) NULL;
+ALTER TABLE lessons ADD COLUMN time TIME NULL;
+ALTER TABLE lessons ADD COLUMN room VARCHAR(20) NULL;
+
+UPDATE lessons SET day = 'MON', time = '12:00:00', room = 'classroom 101' WHERE id = 1;
+UPDATE lessons SET day = 'WED', time = '14:00:00', room = 'classroom 202' WHERE id = 2;
+UPDATE lessons SET day = 'FRI', time = '16:00:00', room = 'classroom 303' WHERE id = 3;
+UPDATE lessons SET day = 'TUE', time = '14:00:00', room = 'classroom 302' WHERE id = 4;
+UPDATE lessons SET day = 'THU', time = '16:00:00', room = 'classroom 103' WHERE id = 5;
+
+
+SELECT l.title, l.day, l.time, g.title, l.room
+FROM lessons l
+JOIN group_academy g ON l.id = g.id_lesson;
+
+SELECT s.name, l.title, r.mark
+FROM students s
+JOIN register r ON s.id = r.id_student
+JOIN lessons l ON l.id = r.id_lesson
+WHERE s.id = 5;
